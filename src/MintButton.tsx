@@ -14,12 +14,14 @@ import {
 import { CIVIC_GATEKEEPER_NETWORK } from "./utils";
 
 export const CTAButton = styled(Button)`
-  width: 100%;
-  height: 60px;
+  width: 60%;
+  height: 50px;
   margin-top: 10px;
   margin-bottom: 5px;
-  background: linear-gradient(180deg, #604ae5 0%, #813eee 100%);
-  color: white;
+  background: linear-gradient(180deg, #FFDD00 0%, #FBB034 100%);
+  border-radius: 20px;
+  justify-content: center;
+  color: black;
   font-size: 16px;
   font-weight: bold;
 `; // add your own styles here
@@ -55,6 +57,7 @@ export const MintButton = ({
       candyMachine?.state.isWhitelistOnly
     ) {
       return "WHITELIST MINT";
+      // return "MINT";
     }
 
     return "MINT";
@@ -108,6 +111,7 @@ export const MintButton = ({
 
   return (
     <CTAButton
+      style={{ color: "black", border: "1px solid black" }}
       disabled={isMinting || !isActive}
       onClick={async () => {
         if (candyMachine?.state.isActive && candyMachine?.state.gatekeeper) {

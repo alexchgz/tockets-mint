@@ -1,14 +1,150 @@
+@font-face {
+  font-family: bak_regular;
+  src: url(./fonts/Bakbak_One/BakbakOne-Regular.ttf);
+}
+
 body {
-  background: #000000;
+  /* background: #000000; */
+  background: url(./assets/BG.jpg) no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+  /* font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+    sans-serif; */
+  font-family: bak_regular !important;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  position: relative;
+}
+
+h6, button {
+  font-family: bak_regular !important;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+  /* font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace; */
+  font-family: bak_regular;
+}
+
+.logos-container {
+  width: 50%;
+  margin: 20px 0;
+}
+
+.data-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.logo-container {
+  display: flex;
+  align-items: center;
+  padding-right: 2%;
+}
+
+.mint-container {
+  width: 38%;
+}
+
+.logo-image {
+  width: 260px;
+  margin: 10px auto 20px auto;
+}
+
+.remaining-time {
+  margin: 30px auto 0 auto !important;
+}
+
+.mint-data {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  align-items: center;
+  margin-top: 15px;
+  margin-bottom: 20px;
+}
+
+  .mint-data>div {
+    width: 50%;
+    max-width: none;
+    flex-basis: auto;
+    text-align: center;
+  }
+
+.ship-container {
+  display: block;
+  flex: 1;
+  height: 80px;
+  margin-top: 20px;
+  text-align: center;
+}
+
+  .ship-container .ship-image {
+    width: 340px;
+    margin: 0 auto;
+  }
+
+.connect-button {
+  display: flex;
+  margin: 0 auto;
+}
+
+.footer-container {
+  display: block;
+  width: 450px;
+  padding: 10px;
+  background-color: rgba(0, 0, 0, 0.6);
+  border-radius: 28px;
+  margin: 15px auto 0 auto;
+}
+
+.footer-text {
+  font-family: bak_regular !important;
+  font-weight: 400;
+}
+
+.rrss-container {
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.medium-icon {
+  width: 32px;
+  padding: 0 8px;
+  transform: translateY(-2px);
+}
+
+.twitter-icon {
+  width: 26px;
+  padding: 0 8px;
+}
+
+.discord-icon {
+  width: 28px;
+  padding: 0 8px;
+  transform: translateY(-1px);
+}
+
+.insta-icon {
+  width: 24px;
+  height: 24px;
+  padding: 0 8px;
+  transform: translateY(1px);
+  margin-left: 1px;
+}
+
+a {
+  cursor: pointer;
+}
+
+/* NO CONNECTED */
+.connect-button {
+  width: 50% !important;
+  border-radius: 25px !important;
+  margin-bottom: 20px !important;
 }

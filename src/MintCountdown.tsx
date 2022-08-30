@@ -10,17 +10,18 @@ const useStyles = makeStyles((theme: Theme) =>
       padding: theme.spacing(0),
       "& > *": {
         margin: theme.spacing(0.4),
-        width: theme.spacing(6),
+        width: theme.spacing(10),
         height: theme.spacing(6),
         display: "flex",
         flexDirection: "column",
         alignContent: "center",
         alignItems: "center",
         justifyContent: "center",
-        background: "#384457",
-        color: "white",
-        borderRadius: 5,
+        background: "linear-gradient(180deg, #009FFD 0%, #2A2A72 100%)",
+        color: "black",
+        borderRadius: 10,
         fontSize: 10,
+        border: "1px solid black"
       },
     },
     done: {

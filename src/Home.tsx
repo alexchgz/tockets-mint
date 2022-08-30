@@ -1,6 +1,16 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import * as anchor from "@project-serum/anchor";
 
+import logo from './assets/logo.png'
+import ship from './assets/tockett.png'
+import twitterIcon from './assets/rrss/twitter_icon.png'
+import instaIcon from './assets/rrss/1.png'
+import discordIcon from './assets/rrss/discover_icon.png'
+import mediumIcon from './assets/rrss/medium.png'
+// import pinterestIcon from './assets/rrss/pinterest_logo.png'
+// import facebookIcon from './assets/rrss/fb_logo.png'
+// import tikTokIcon from './assets/rrss/tiktok_logo.png'
+// import { CrossmintPayButton } from "@crossmint/client-sdk-react-ui";
 import styled from "styled-components";
 import { Container, Snackbar } from "@material-ui/core";
 import Paper from "@material-ui/core/Paper";
@@ -34,8 +44,8 @@ import { WalletAdapterNetwork } from "@solana/wallet-adapter-base";
 const ConnectButton = styled(WalletDialogButton)`
   width: 100%;
   height: 60px;
-  margin-top: 10px;
-  margin-bottom: 5px;
+  display: flex;
+  margin: 10px auto 5px auto;
   background: linear-gradient(180deg, #604ae5 0%, #813eee 100%);
   color: white;
   font-size: 16px;
@@ -487,167 +497,245 @@ const Home = (props: HomeProps) => {
   }, [refreshCandyMachineState]);
 
   return (
-    <Container style={{ marginTop: 100 }}>
-      <Container maxWidth="xs" style={{ position: "relative" }}>
+    <Container style={{ marginTop: 70 }}>
+      <Container maxWidth="md" style={{ position: "relative" }}>  
         <Paper
           style={{
             padding: 24,
             paddingBottom: 10,
-            backgroundColor: "#151A1F",
-            borderRadius: 6,
+            backgroundColor: 'rgba(0, 0, 0, 0.7)',
+            borderRadius: 40
           }}
         >
-          {!wallet.connected ? (
-            <ConnectButton>Connect Wallet</ConnectButton>
-          ) : (
-            <>
-              {candyMachine && (
-                <Grid
-                  container
-                  direction="row"
-                  justifyContent="center"
-                  wrap="nowrap"
-                >
-                  <Grid item xs={3}>
-                    <Typography variant="body2" color="textSecondary">
-                      Remaining
-                    </Typography>
-                    <Typography
-                      variant="h6"
-                      color="textPrimary"
-                      style={{
-                        fontWeight: "bold",
+          <div className="ship-container">
+            <img src={logo} alt="SolRockets logo" className="ship-image" /> 
+          </div>
+          <div className="data-container">
+            {!wallet.connected ? (
+              <ConnectButton className="connect-button">Connect Wallet</ConnectButton>
+            ) : (
+              <>
+                <div className="logos-container">
+                  {/* <div className="ship-container">
+                    <img src={logo} alt="SolRockets logo" className="ship-image" /> 
+                  </div> */}
+                  <div className="logo-container"> 
+                    <img src={ship} alt="SolRockets logo" className="logo-image" />  
+                  </div>  
+                </div>
+                {candyMachine && (
+                  <Grid
+                    container
+                    // direction="row"
+                    // justifyContent="center"
+                    // wrap="nowrap"
+                    style={{
+                      width: '40%',
+                      display: 'flex',
+                      alignItems: "center",
+                      height: 'auto',
+                      backgroundColor: "#050505",
+                      margin: "0 auto 0 auto",
+                      borderRadius: 25,
+                      border: "1px solid #111",
+                      transform: "translateY(-3px)"
+                    }}
+                  >
+                    <Grid className="remaining-time" item xs={8}>
+                      {isActive && endDate && Date.now() < endDate.getTime() ? (
+                        <>
+                          <MintCountdown
+                            key="endSettings"
+                            date={getCountdownDate(candyMachine)}
+                            style={{ justifyContent: "flex-end" }}
+                            status="COMPLETED"
+                            onComplete={toggleMintButton}
+                          />
+                          <Typography
+                            variant="caption"
+                            align="center"
+                            display="block"
+                            style={{ fontWeight: "bold" }}
+                          >
+                            TO END OF MINT
+                          </Typography>
+                        </>
+                      ) : (
+                        <>
+                          <MintCountdown
+                            key="goLive"
+                            date={getCountdownDate(candyMachine)}
+                            style={{ 
+                              justifyContent: "flex-end"
+                            }}
+                            status={
+                              candyMachine?.state?.isSoldOut ||
+                              (endDate && Date.now() > endDate.getTime())
+                                ? "COMPLETED"
+                                : isPresale
+                                ? "PRESALE"
+                                : "LIVE"
+                            }
+                            onComplete={toggleMintButton}
+                          />
+                          {isPresale &&
+                            candyMachine.state.goLiveDate &&
+                            candyMachine.state.goLiveDate.toNumber() >
+                              new Date().getTime() / 1000 && (
+                              <Typography
+                                variant="caption"
+                                align="center"
+                                display="block"
+                                style={{ fontWeight: "400", fontFamily: "bak_regular", fontSize: 14, marginTop: ".5em" }}
+                              >
+                                UNTIL PUBLIC MINT
+                              </Typography>
+                            )}
+                        </>
+                      )}
+                    </Grid>
+                    {/* <div className="ship-container">
+                      <img src={logo} alt="SolRockets logo" className="ship-image" />  
+                    </div> */}
+                    <MintContainer
+                      style={{ 
+                        width: "100%",
+                        position: "relative",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        marginTop: 20,
+                        WebkitJustifyContent: "center",
+                        display: "flex",
+                        margin: "20px auto 0 auto"
                       }}
                     >
-                      {`${itemsRemaining}`}
-                    </Typography>
-                  </Grid>
-                  <Grid item xs={4}>
-                    <Typography variant="body2" color="textSecondary">
-                      {isWhitelistUser && discountPrice
-                        ? "Discount Price"
-                        : "Price"}
-                    </Typography>
-                    <Typography
-                      variant="h6"
-                      color="textPrimary"
-                      style={{ fontWeight: "bold" }}
-                    >
-                      {isWhitelistUser && discountPrice
-                        ? `◎ ${formatNumber.asNumber(discountPrice)}`
-                        : `◎ ${formatNumber.asNumber(
-                            candyMachine.state.price
-                          )}`}
-                    </Typography>
-                  </Grid>
-                  <Grid item xs={5}>
-                    {isActive && endDate && Date.now() < endDate.getTime() ? (
-                      <>
-                        <MintCountdown
-                          key="endSettings"
-                          date={getCountdownDate(candyMachine)}
-                          style={{ justifyContent: "flex-end" }}
-                          status="COMPLETED"
-                          onComplete={toggleMintButton}
+                      {candyMachine?.state.isActive &&
+                      candyMachine?.state.gatekeeper &&
+                      wallet.publicKey &&
+                      wallet.signTransaction ? (
+                        <GatewayProvider
+                          wallet={{
+                            publicKey:
+                              wallet.publicKey ||
+                              new PublicKey(CANDY_MACHINE_PROGRAM),
+                            //@ts-ignore
+                            signTransaction: wallet.signTransaction,
+                          }}
+                          gatekeeperNetwork={
+                            candyMachine?.state?.gatekeeper?.gatekeeperNetwork
+                          }
+                          clusterUrl={rpcUrl}
+                          cluster={cluster}
+                          options={{ autoShowModal: false }}
+                        >
+                          <MintButton
+                            candyMachine={candyMachine}
+                            isMinting={isUserMinting}
+                            setIsMinting={(val) => setIsUserMinting(val)}
+                            onMint={onMint}
+                            isActive={
+                              isActive ||
+                              (isPresale && isWhitelistUser && isValidBalance)
+                            }
+                          />
+                        </GatewayProvider>
+                      ) : (
+                        <MintButton
+                          candyMachine={candyMachine}
+                          isMinting={isUserMinting}
+                          setIsMinting={(val) => setIsUserMinting(val)}
+                          onMint={onMint}
+                          isActive={
+                            isActive ||
+                            (isPresale && isWhitelistUser && isValidBalance)
+                          }
                         />
+                      )}
+                      {/* <CrossmintPayButton
+                        collectionTitle="TOCKETS"
+                        collectionDescription="Premium Pass."
+                        collectionPhoto="../assets/Tocket.gif"
+                        clientId=""
+                      >
+
+                      </CrossmintPayButton> */}
+                    </MintContainer>
+                    <div className="mint-data">
+                      <Grid className="mint-container" item xs={3}>
+                        <Typography variant="body2" color="textSecondary" style={{ fontFamily: 'bak_regular' }}>
+                          Remaining
+                        </Typography>
                         <Typography
-                          variant="caption"
-                          align="center"
-                          display="block"
+                          variant="h6"
+                          color="textPrimary"
+                          style={{
+                            fontWeight: "bold",
+                          }}
+                        >
+                          {`${itemsRemaining}`}/1234
+                          {/* 1234/1234 */}
+                        </Typography>
+                      </Grid>
+                      <Grid item xs={4}>
+                        <Typography variant="body2" color="textSecondary" style={{ fontFamily: 'bak_regular' }}>
+                          {isWhitelistUser && discountPrice
+                            ? "Discount Price"
+                            : "Price"}
+                        </Typography>
+                        <Typography
+                          variant="h6"
+                          color="textPrimary"
                           style={{ fontWeight: "bold" }}
                         >
-                          TO END OF MINT
+                          {isWhitelistUser && discountPrice
+                            ? `◎ ${formatNumber.asNumber(discountPrice)}`
+                            : `◎ ${formatNumber.asNumber(
+                                candyMachine.state.price
+                              )}`}
                         </Typography>
-                      </>
-                    ) : (
-                      <>
-                        <MintCountdown
-                          key="goLive"
-                          date={getCountdownDate(candyMachine)}
-                          style={{ justifyContent: "flex-end" }}
-                          status={
-                            candyMachine?.state?.isSoldOut ||
-                            (endDate && Date.now() > endDate.getTime())
-                              ? "COMPLETED"
-                              : isPresale
-                              ? "PRESALE"
-                              : "LIVE"
-                          }
-                          onComplete={toggleMintButton}
-                        />
-                        {isPresale &&
-                          candyMachine.state.goLiveDate &&
-                          candyMachine.state.goLiveDate.toNumber() >
-                            new Date().getTime() / 1000 && (
-                            <Typography
-                              variant="caption"
-                              align="center"
-                              display="block"
-                              style={{ fontWeight: "bold" }}
-                            >
-                              UNTIL PUBLIC MINT
-                            </Typography>
-                          )}
-                      </>
-                    )}
+                      </Grid>
+                    </div>
                   </Grid>
-                </Grid>
-              )}
-              <MintContainer>
-                {candyMachine?.state.isActive &&
-                candyMachine?.state.gatekeeper &&
-                wallet.publicKey &&
-                wallet.signTransaction ? (
-                  <GatewayProvider
-                    wallet={{
-                      publicKey:
-                        wallet.publicKey ||
-                        new PublicKey(CANDY_MACHINE_PROGRAM),
-                      //@ts-ignore
-                      signTransaction: wallet.signTransaction,
-                    }}
-                    gatekeeperNetwork={
-                      candyMachine?.state?.gatekeeper?.gatekeeperNetwork
-                    }
-                    clusterUrl={rpcUrl}
-                    cluster={cluster}
-                    options={{ autoShowModal: false }}
-                  >
-                    <MintButton
-                      candyMachine={candyMachine}
-                      isMinting={isUserMinting}
-                      setIsMinting={(val) => setIsUserMinting(val)}
-                      onMint={onMint}
-                      isActive={
-                        isActive ||
-                        (isPresale && isWhitelistUser && isValidBalance)
-                      }
-                    />
-                  </GatewayProvider>
-                ) : (
-                  <MintButton
-                    candyMachine={candyMachine}
-                    isMinting={isUserMinting}
-                    setIsMinting={(val) => setIsUserMinting(val)}
-                    onMint={onMint}
-                    isActive={
-                      isActive ||
-                      (isPresale && isWhitelistUser && isValidBalance)
-                    }
-                  />
                 )}
-              </MintContainer>
-            </>
-          )}
+
+              </>
+            )}
+          </div>
+          <div className="rrss-container">
+          <a href="https://medium.com/@SolRockets/solrockets-is-born-70105cee75e" target="_blank" rel="noreferrer">
+            <img src={mediumIcon} className="medium-icon"></img>
+          </a>
+					<a href="https://twitter.com/SolRockets" target="_blank" rel="noreferrer">
+            <img src={twitterIcon} className="twitter-icon"></img>
+          </a>
+					<a href="http://discord.gg/c9apQf2pu9" target="_blank" rel="noreferrer">
+            <img src={discordIcon} className="discord-icon"></img>
+          </a>
+					<a href="https://instagram.com/solrockets_" target="_blank" rel="noreferrer">
+            <img src={instaIcon} className="insta-icon"></img>
+          </a>
+					{/* <a href="https://br.pinterest.com/SolRockets_" target="_blank" rel="noreferrer">
+            <img src={pinterestIcon} className="social_icon_footer"></img>
+          </a>
+					<a href="https://www.facebook.com/sol.rocketss/" target="_blank" rel="noreferrer">
+            <img src={facebookIcon} className="social_icon_footer"></img>
+          </a>
+					<a href="https://www.tiktok.com/@solrockets" target="_blank" rel="noreferrer">
+            <img src={tikTokIcon} className="social_icon_footer"></img></a> */}
+          </div>
+        </Paper>
+        <div className="footer-container">
           <Typography
             variant="caption"
             align="center"
             display="block"
-            style={{ marginTop: 7, color: "grey" }}
+            style={{ color: "white", fontSize: 16, fontWeight: 'bold' }}
           >
-            Powered by METAPLEX
+            <span className="footer-text">Bridging physical and digital world.</span>
+            <br></br>
+            <span className="footer-text">Join the Rocketverse.</span>
           </Typography>
-        </Paper>
+        </div>
       </Container>
 
       <Snackbar
